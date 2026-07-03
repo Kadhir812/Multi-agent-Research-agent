@@ -1,2 +1,22 @@
+[project]
+name = "research-assistant"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph",
+    "langsmith",
+    "langchain-community",
+    "langchain-openai",
+    "tavily-python",
+    "openai",
+    "python-dotenv",
+    "pypdf",
+    "tenacity",
+    "pydantic",
+    "fastapi",
+    "uvicorn",
+    "python-multipart",
+]
+
 [tool.vercel]
 entrypoint = "api:app"

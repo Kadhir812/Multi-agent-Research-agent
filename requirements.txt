@@ -1,5 +1,7 @@
 langgraph
 langsmith
+langchain-community
+langchain-openai
 tavily-python
 openai
 python-dotenv
