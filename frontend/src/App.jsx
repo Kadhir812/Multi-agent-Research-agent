@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import ApiKeyModal from './ApiKeyModal'
 import { hasApiKeys, loadApiKeys, saveApiKeys } from './apiKeys'
+import { API_BASE } from './apiBase'
 import './App.css'
 
 const EMPTY_RESULT = {
@@ -65,7 +66,7 @@ function DocumentUpload({ documents, onUploaded }) {
         const formData = new FormData()
         formData.append('file', file)
 
-        const res = await fetch('/api/upload', { method: 'POST', body: formData })
+        const res = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData })
         if (!res.ok) {
           throw new Error(`Upload failed for ${file.name} (status ${res.status})`)
         }
@@ -133,7 +134,7 @@ export default function App() {
 
   async function loadDocuments() {
     try {
-      const res = await fetch('/api/documents')
+      const res = await fetch(`${API_BASE}/documents`)
       if (!res.ok) return
       const data = await res.json()
       setDocuments(data.documents)
@@ -160,7 +161,7 @@ export default function App() {
     setResult(null)
 
     try {
-      const res = await fetch('/api/ask', {
+      const res = await fetch(`${API_BASE}/ask`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
