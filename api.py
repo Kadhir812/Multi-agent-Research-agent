@@ -19,7 +19,11 @@ Path(DATA_DIR).mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(title="Research Assistant API")
 
-_allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+_allowed_origins = [
+    origin.strip().rstrip("/")
+    for origin in os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+    if origin.strip()
+]
 
 app.add_middleware(
     CORSMiddleware,
