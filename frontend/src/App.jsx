@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ApiKeyModal from './ApiKeyModal'
 import { hasApiKeys, loadApiKeys, saveApiKeys } from './apiKeys'
 import { API_BASE } from './apiBase'
@@ -46,63 +46,12 @@ function AgentCard({ title, result }) {
   )
 }
 
-function DocumentUpload({ documents, onUploaded }) {
-  const [uploading, setUploading] = useState(false)
-  const [error, setError] = useState(null)
-  const inputRef = useRef(null)
-
-  async function handleFiles(fileList) {
-    const files = Array.from(fileList).filter((f) => f.name.toLowerCase().endsWith('.pdf'))
-    if (files.length === 0) {
-      setError('Only PDF files are supported.')
-      return
-    }
-
-    setUploading(true)
-    setError(null)
-
-    try {
-      for (const file of files) {
-        const formData = new FormData()
-        formData.append('file', file)
-
-        const res = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData })
-        if (!res.ok) {
-          throw new Error(`Upload failed for ${file.name} (status ${res.status})`)
-        }
-      }
-      onUploaded()
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setUploading(false)
-      if (inputRef.current) inputRef.current.value = ''
-    }
-  }
-
+function DocumentList({ documents }) {
   return (
     <div className="upload-panel">
       <div className="upload-panel-header">
         <h3>Documents</h3>
-        <button
-          type="button"
-          className="upload-button"
-          disabled={uploading}
-          onClick={() => inputRef.current?.click()}
-        >
-          {uploading ? 'Uploading…' : 'Upload PDF'}
-        </button>
-        <input
-          ref={inputRef}
-          type="file"
-          accept="application/pdf"
-          multiple
-          hidden
-          onChange={(e) => e.target.files && handleFiles(e.target.files)}
-        />
       </div>
-
-      {error && <div className="error-banner error-banner--small">{error}</div>}
 
       {documents.length > 0 ? (
         <ul className="document-list">
@@ -111,7 +60,7 @@ function DocumentUpload({ documents, onUploaded }) {
           ))}
         </ul>
       ) : (
-        <p className="document-empty">No documents uploaded yet — the docs agent has nothing to search.</p>
+        <p className="document-empty">No documents available — the docs agent has nothing to search.</p>
       )}
     </div>
   )
@@ -167,6 +116,7 @@ export default function App() {
           'Content-Type': 'application/json',
           'X-OpenAI-Key': apiKeys.openai,
           'X-Tavily-Key': apiKeys.tavily,
+          ...(apiKeys.langchain ? { 'X-Langchain-Key': apiKeys.langchain } : {}),
         },
         body: JSON.stringify({ question }),
       })
@@ -206,7 +156,7 @@ export default function App() {
         <p>Ask a question — web, docs, and math agents collaborate on the answer.</p>
       </header>
 
-      <DocumentUpload documents={documents} onUploaded={loadDocuments} />
+      <DocumentList documents={documents} />
 
       <form className="ask-form" onSubmit={handleSubmit}>
         <input

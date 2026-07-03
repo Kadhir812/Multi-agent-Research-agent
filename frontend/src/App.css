@@ -169,28 +169,6 @@
   letter-spacing: 0.06em;
 }
 
-.upload-button {
-  border: 1px solid var(--accent-border);
-  background: var(--accent-bg);
-  color: var(--accent);
-  font: inherit;
-  font-weight: 600;
-  font-size: 13px;
-  padding: 7px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: opacity 0.15s ease;
-}
-
-.upload-button:hover:not(:disabled) {
-  opacity: 0.85;
-}
-
-.upload-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 .document-list {
   margin: 12px 0 0;
   padding-left: 20px;
@@ -205,12 +183,6 @@
   opacity: 0.75;
 }
 
-.error-banner--small {
-  margin-top: 10px;
-  margin-bottom: 0;
-  padding: 8px 12px;
-  font-size: 13px;
-}
 
 .ask-form {
   display: flex;

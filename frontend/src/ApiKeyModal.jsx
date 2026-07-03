@@ -3,11 +3,12 @@ import { useState } from 'react'
 export default function ApiKeyModal({ initialKeys, dismissible, onSave, onDismiss }) {
   const [openai, setOpenai] = useState(initialKeys.openai)
   const [tavily, setTavily] = useState(initialKeys.tavily)
+  const [langchain, setLangchain] = useState(initialKeys.langchain || '')
 
   function handleSubmit(e) {
     e.preventDefault()
     if (!openai.trim() || !tavily.trim()) return
-    onSave({ openai: openai.trim(), tavily: tavily.trim() })
+    onSave({ openai: openai.trim(), tavily: tavily.trim(), langchain: langchain.trim() })
   }
 
   return (
@@ -38,6 +39,17 @@ export default function ApiKeyModal({ initialKeys, dismissible, onSave, onDismis
               value={tavily}
               onChange={(e) => setTavily(e.target.value)}
               placeholder="tvly-..."
+              autoComplete="off"
+            />
+          </label>
+
+          <label>
+            LangSmith API key (optional, for tracing)
+            <input
+              type="password"
+              value={langchain}
+              onChange={(e) => setLangchain(e.target.value)}
+              placeholder="lsv2_pt_..."
               autoComplete="off"
             />
           </label>

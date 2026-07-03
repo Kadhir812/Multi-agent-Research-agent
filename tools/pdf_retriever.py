@@ -1,15 +1,10 @@
 import glob
 import os
-import tempfile
 
 from pypdf import PdfReader
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-if os.getenv("VERCEL"):
-    # /var/task (where the deployed code lives) is read-only on Vercel; only /tmp is writable.
-    DATA_DIR = os.path.join(tempfile.gettempdir(), "research_assistant_data")
-else:
-    DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=8))

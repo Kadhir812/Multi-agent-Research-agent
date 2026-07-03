@@ -17,6 +17,3 @@ dependencies = [
     "uvicorn",
     "python-multipart",
 ]
-
-[tool.vercel]
-entrypoint = "api:app"
