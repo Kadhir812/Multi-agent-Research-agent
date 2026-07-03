@@ -1,0 +1,11 @@
+langgraph
+langsmith
+tavily-python
+openai
+python-dotenv
+pypdf
+tenacity
+pydantic
+fastapi
+uvicorn
+python-multipart
